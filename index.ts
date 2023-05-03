@@ -244,7 +244,7 @@ new aws.iam.RolePolicyAttachment("rds-readOnly-policy-attachment", {
     role: role.name,
 }); 
 
-new aws.iam.RolePolicyAttachment("ssm-parameter-policy-attachment", {
+new aws.iam.RolePolicyAttachment("ECR-Readonly-policy-attachment", {
     policyArn: "arn:aws:iam::623865992637:policy/ECRReadOnly",
     role: role.name,
 });
