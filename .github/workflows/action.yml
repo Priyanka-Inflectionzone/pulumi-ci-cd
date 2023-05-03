@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  CONTAINER_NAME: frontend
+  CONTAINER_NAME: demo
 
 jobs:
   build:
