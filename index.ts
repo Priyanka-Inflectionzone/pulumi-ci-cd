@@ -138,23 +138,9 @@ usermod -aG docker ubuntu
 
 apt-get install -y awscli 
 
-export region="ap-south-1"
-export instance_id="my-db-instance"
-
-# wait for the RDS instance to become available
-
-while ! aws rds describe-db-instances --region "ap-south-1" --db-instance-identifier "my-db-instance" --query "DBInstances[*].DBInstanceStatus" --output text | grep "available"
-do
-  sleep 200
-done
-
-# export URL=$(aws ssm get-parameter --region ap-south-1 --name "dbUrl" --query Parameter.Value --output text)
-
 docker network create my-network
 
-# docker run --name backend --network my-network -e DATABASE_URL="$(aws ssm get-parameter --region "ap-south-1" --name "dbUrl" --query Parameter.Value --output text)" -d priyankainflectionzone/backend-app:1.0 
-
-docker run -d --name app-container -p 3000:3000 --network my-network -e VIRTUAL_HOST="$(aws ssm get-parameter --region "ap-south-1" --name "publicIP" --query Parameter.Value --output text)" -e BACKEND_API_URL="http://backend:3456" priyankainflectionzone/frontend-app:2.0
+docker run -d --name app-container -p 3000:3000 --network my-network -e VIRTUAL_HOST="$(aws ssm get-parameter --region "ap-south-1" --name "publicIP" --query Parameter.Value --output text)" -e BACKEND_API_URL="http://backend:3456" 623865992637.dkr.ecr.ap-south-1.amazonaws.com/demo:latest
 
 docker run -d -p 80:80 --network my-network -v /var/run/docker.sock:/tmp/docker.sock -t jwilder/nginx-proxy `;
 
