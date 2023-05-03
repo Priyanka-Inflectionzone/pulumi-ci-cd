@@ -138,13 +138,11 @@ usermod -aG docker ubuntu
 
 apt-get install -y awscli 
 
-docker network create my-network 
-
 aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 623865992637.dkr.ecr.ap-south-1.amazonaws.com
 
-docker run -d --name app-container -p 3000:3000 --network my-network -e VIRTUAL_HOST="$(aws ssm get-parameter --region "ap-south-1" --name "publicIP" --query Parameter.Value --output text)" -e BACKEND_API_URL="http://backend:3456" priyankainflectionzone/frontend-app:3.0
+docker run -d --name app-container -p 3000:3000 -e VIRTUAL_HOST="$(aws ssm get-parameter --region "ap-south-1" --name "publicIP" --query Parameter.Value --output text)" -e BACKEND_API_URL="http://backend:3456" 623865992637.dkr.ecr.ap-south-1.amazonaws.com/demo:latest
 
-docker run -d -p 80:80 --network my-network -v /var/run/docker.sock:/tmp/docker.sock -t jwilder/nginx-proxy `;
+docker run -d -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock -t jwilder/nginx-proxy `;
 
 const config = new pulumi.Config();
 
