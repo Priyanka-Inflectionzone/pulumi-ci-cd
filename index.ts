@@ -20,13 +20,14 @@ const publicSubnet = new aws.ec2.Subnet("dev-public-subnet", {
     },
 });
 
-const privateSubnet = new aws.ec2.Subnet("dev-private-subnet", {
+const privateSubnet = new aws.ec2.Subnet("dev-public-subnet-1", {
     vpcId: main.id,
     cidrBlock: "10.0.2.0/24",
     availabilityZone: "ap-south-1b",
     tags: {
-        Name: "dev-private-subnet",
+        Name: "dev-public-subnet-1",
     },
+    mapPublicIpOnLaunch: true
 });
 
 //Configure an Internet Gateway
