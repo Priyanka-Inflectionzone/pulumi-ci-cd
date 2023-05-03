@@ -1,0 +1,52 @@
+name: Develop-CI-CD
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+env:
+  CONTAINER_NAME: frontend
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t ${{ env.CONTAINER_NAME }} ./Svelete-skeleton
+          docker tag ${{ env.CONTAINER_NAME }}:latest ${{ env.ECR_REGISTRY }}/${{ env.CONTAINER_NAME }}:latest
+          docker push ${{ env.ECR_REGISTRY }}/${{ env.CONTAINER_NAME }}:latest
+
+      - uses: actions/setup-node@v3.5
+        with:
+          node-version-file: package.json
+
+      - run: npm install
+      - uses: pulumi/actions@v3
+        with:
+          command: up
+          stack-name: stack-name # When using an individual account, only use stack-name.
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}

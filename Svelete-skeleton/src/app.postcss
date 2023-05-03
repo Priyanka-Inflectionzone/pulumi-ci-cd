@@ -1,0 +1,36 @@
+/*place global styles here */
+html, body { @apply h-full w-full}
+/* html, body { @apply bg-white dark:bg-surface-900 text-black dark:text-white p-4; } */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.input {
+	@apply border border-primary-200  hover:border-primary-400 focus:border-primary-500;
+}
+.textarea{
+	@apply border border-primary-200  hover:border-primary-400 focus:border-primary-500;
+}
+.select {
+	@apply border border-primary-200  hover:border-primary-400 focus:border-primary-500;
+}
+
+.select optgroup option {
+	@apply pb-20 pl-4
+}
+
+.table thead {
+	@apply bg-secondary-500 text-white sticky top-0 ;
+    
+}
+.table thead th {
+	@apply sticky top-0 ;
+    
+}
+.table tbody {
+	@apply bg-tertiary-500 text-primary-500;
+    
+}
+.table tbody td {
+	@apply h-4
+}

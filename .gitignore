@@ -1,0 +1,8 @@
+/bin/
+
+/node_modules/ 
+
+# webkey
+# webkey.pub
+
+# Pulumi.dev.yaml
