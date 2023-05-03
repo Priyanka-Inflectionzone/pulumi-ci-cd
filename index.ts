@@ -138,7 +138,9 @@ usermod -aG docker ubuntu
 
 apt-get install -y awscli 
 
-docker network create my-network
+docker network create my-network 
+
+aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 623865992637.dkr.ecr.ap-south-1.amazonaws.com
 
 docker run -d --name app-container -p 3000:3000 --network my-network -e VIRTUAL_HOST="$(aws ssm get-parameter --region "ap-south-1" --name "publicIP" --query Parameter.Value --output text)" -e BACKEND_API_URL="http://backend:3456" 623865992637.dkr.ecr.ap-south-1.amazonaws.com/demo:latest
 
@@ -245,7 +247,7 @@ new aws.iam.RolePolicyAttachment("rds-readOnly-policy-attachment", {
 }); 
 
 new aws.iam.RolePolicyAttachment("ECR-Readonly-policy-attachment", {
-    policyArn: "arn:aws:iam::623865992637:policy/ECRReadOnly",
+    policyArn: "arn:aws:iam::623865992637:policy/ECR_FullAccess",
     role: role.name,
 });
 
