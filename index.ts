@@ -242,6 +242,11 @@ const policy2 = new aws.iam.Policy("rds-readOnly-policy", {
 new aws.iam.RolePolicyAttachment("rds-readOnly-policy-attachment", {
     policyArn: policy2.arn,
     role: role.name,
+}); 
+
+new aws.iam.RolePolicyAttachment("ssm-parameter-policy-attachment", {
+    policyArn: "arn:aws:iam::623865992637:policy/ECRReadOnly",
+    role: role.name,
 });
 
 const instanceProfile = new aws.iam.InstanceProfile("myInstanceProfile", {
