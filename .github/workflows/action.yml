@@ -9,7 +9,7 @@ env:
   CONTAINER_NAME: demo
   S3_BUCKET_NAME: pulumidemobucket1
   S3_CODE_PATH: pulumi-code
-  CODE_PATH: ./pulumi-code/
+  CODE_PATH: "./pulumi-code"
 
 jobs:
   build:
