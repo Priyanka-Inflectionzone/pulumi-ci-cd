@@ -54,6 +54,6 @@ jobs:
         with:
           refresh: true
           command: up
-          stack-name: "pulumi-nginx/dev"
+          stack-name: "priyankakale27/pulumi-nginx/dev"
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
