@@ -1,6 +1,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 
+//Create VPC
 const main = new aws.ec2.Vpc("dev-vpc", {
     cidrBlock: "10.0.0.0/16",
     instanceTenancy: "default",
@@ -20,14 +21,13 @@ const publicSubnet = new aws.ec2.Subnet("dev-public-subnet", {
     },
 });
 
-const privateSubnet = new aws.ec2.Subnet("dev-public-subnet-1", {
+const privateSubnet = new aws.ec2.Subnet("dev-private-subnet", {
     vpcId: main.id,
     cidrBlock: "10.0.2.0/24",
     availabilityZone: "ap-south-1b",
     tags: {
-        Name: "dev-public-subnet-1",
+        Name: "dev-private-subnet",
     },
-    mapPublicIpOnLaunch: true
 });
 
 //Configure an Internet Gateway
@@ -122,8 +122,7 @@ const devSG = new aws.ec2.SecurityGroup("dev-sg", {
     },
 });
 
-//Userdata script to be run while launching EC2 instance
-
+//Userdata script 
 const userData= 
 `#!/bin/bash
 apt-get update
@@ -136,15 +135,10 @@ add-apt-repository \
 apt-get update
 apt-get install -y docker-ce
 usermod -aG docker ubuntu
-
 apt-get install -y awscli 
-
 aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 623865992637.dkr.ecr.ap-south-1.amazonaws.com 
-
 docker rm -f app-container nginx
-
 docker run -d --name app-container -p 3000:3000 -e VIRTUAL_HOST="$(aws ssm get-parameter --region "ap-south-1" --name "publicIP" --query Parameter.Value --output text)" -e BACKEND_API_URL="http://backend:3456" 623865992637.dkr.ecr.ap-south-1.amazonaws.com/demo:latest
-
 docker run -d -p 80:80 --name nginx -v /var/run/docker.sock:/tmp/docker.sock -t jwilder/nginx-proxy `;
 
 const config = new pulumi.Config();
