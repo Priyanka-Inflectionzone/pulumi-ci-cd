@@ -48,11 +48,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16.0.0
-
+      - run: cp -r ./pulumi-code .
       - run: npm install
       - uses: pulumi/actions@v4
         with:
-          work-dir: ./pulumi-code
           refresh: true
           command: up
           stack-name: dev
