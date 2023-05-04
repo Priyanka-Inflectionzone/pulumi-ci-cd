@@ -9,6 +9,7 @@ env:
   CONTAINER_NAME: demo
   S3_BUCKET_NAME: pulumidemobucket1
   S3_CODE_PATH: pulumi-code
+  CODE_PATH: ./pulumi-code/
 
 jobs:
   build:
@@ -41,13 +42,14 @@ jobs:
           docker tag ${{ env.CONTAINER_NAME }}:latest ${{ env.ECR_REGISTRY }}/${{ env.CONTAINER_NAME }}:latest
           docker push ${{ env.ECR_REGISTRY }}/${{ env.CONTAINER_NAME }}:latest
 
-      - name: Download files from S3
-        run: aws s3 cp s3://${{env.S3_BUCKET_NAME}}/${{env.S3_CODE_PATH}}/ . --recursive
+      # - name: Download files from S3
+      #   run: aws s3 cp s3://${{env.S3_BUCKET_NAME}}/${{env.S3_CODE_PATH}}/ . --recursive
 
       - uses: actions/setup-node@v3
         with:
           node-version: 16.0.0
 
+      - run: cp ${{CODE_PATH}}/ .
       - run: npm install
       - uses: pulumi/actions@v4
         with:
