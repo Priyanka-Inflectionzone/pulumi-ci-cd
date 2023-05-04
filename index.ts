@@ -138,7 +138,6 @@ usermod -aG docker ubuntu
 chmod 666 /var/run/docker.sock
 apt-get install -y awscli 
 aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 623865992637.dkr.ecr.ap-south-1.amazonaws.com 
-docker rm -f app-container nginx
 docker run -d --name app-container -p 3000:3000 -e VIRTUAL_HOST="$(aws ssm get-parameter --region "ap-south-1" --name "publicIP" --query Parameter.Value --output text)" -e BACKEND_API_URL="http://backend:3456" 623865992637.dkr.ecr.ap-south-1.amazonaws.com/demo:latest
 docker run -d -p 80:80 --name nginx -v /var/run/docker.sock:/tmp/docker.sock -t jwilder/nginx-proxy `;
 
