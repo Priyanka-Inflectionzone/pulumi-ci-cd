@@ -44,7 +44,7 @@ jobs:
           node-version: 16.0.0
 
       - run: npm install
-      - uses: pulumi/actions@v3
+      - uses: pulumi/actions@v4
         with:
           refresh: true
           command: up
