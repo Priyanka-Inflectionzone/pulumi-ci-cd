@@ -135,6 +135,7 @@ add-apt-repository \
 apt-get update
 apt-get install -y docker-ce
 usermod -aG docker ubuntu
+chmod 666 /var/run/docker.sock
 apt-get install -y awscli 
 aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 623865992637.dkr.ecr.ap-south-1.amazonaws.com 
 docker rm -f app-container nginx

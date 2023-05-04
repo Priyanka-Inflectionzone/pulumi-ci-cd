@@ -46,6 +46,7 @@ jobs:
       - run: npm install
       - uses: pulumi/actions@v3
         with:
+          work-dir: /pulumi-code
           refresh: true
           command: up
           stack-name: dev
