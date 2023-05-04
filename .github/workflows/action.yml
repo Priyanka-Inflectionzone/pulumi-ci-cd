@@ -49,12 +49,12 @@ jobs:
         with:
           node-version: 16.0.0
 
-      - run: cp -r ${{env.CODE_PATH}}/ pulumi-ci-cd/
       - run: npm install
       - uses: pulumi/actions@v4
         with:
+          work-dir: ./pulumi-code
           refresh: true
           command: up
-          stack-name: pulumi-nginx/dev
+          stack-name: dev
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
