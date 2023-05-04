@@ -49,7 +49,7 @@ jobs:
         with:
           node-version: 16.0.0
 
-      - run: cp ${{env.CODE_PATH}}/ .
+      - run: cp -r ${{env.CODE_PATH}}/ .
       - run: npm install
       - uses: pulumi/actions@v4
         with:
